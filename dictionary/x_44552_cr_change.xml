@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element audit="true" label="Change" max_length="40" name="x_44552_cr_change" type="collection">
+        <element label="Client Script" max_length="8000" name="client_script" type="script"/>
+        <element label="Code Review" max_length="32" name="code_review" reference="x_44552_cr_request" type="reference"/>
+        <element label="Comments" max_length="4000" name="comments" type="journal_input"/>
+        <element label="HTML" max_length="8000" name="html" type="html"/>
+        <element default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element dependent="table" dependent_on_field="table" label="Related Record" max_length="32" name="related_record" type="document_id" use_dependent_field="true"/>
+        <element label="Server Script" max_length="8000" name="server_script" type="script"/>
+        <element choice="3" default="new" label="Status" max_length="40" name="status" type="string">
+            <choice>
+                <element label="New" sequence="1" value="new"/>
+                <element label="Pending Review (Dev)" sequence="2" value="review_dev"/>
+                <element label="Completed" sequence="3" value="completed"/>
+            </choice>
+        </element>
+        <element label="Table" max_length="80" name="table" type="table_name"/>
+        <element choice="1" label="Type" max_length="40" name="type" read_only="true" type="string">
+            <choice>
+                <element label="Business Rule" value="business rule"/>
+                <element label="Client Script" value="client script"/>
+                <element label="Macro" value="macro"/>
+                <element label="Script Include" value="script include"/>
+                <element label="UI Page" value="ui page"/>
+            </choice>
+        </element>
+        <index name="index">
+            <element name="code_review"/>
+        </index>
+        <index name="index2">
+            <element name="related_record"/>
+        </index>
+    </element>
+</database>

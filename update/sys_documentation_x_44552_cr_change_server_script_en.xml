@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="server_script" label="Server Script" language="en" table="x_44552_cr_change">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>server_script</element>
+            <help/>
+            <hint/>
+            <label>Server Script</label>
+            <language>en</language>
+            <name>x_44552_cr_change</name>
+            <plural>Server Scripts</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2016-12-08 15:11:58</sys_created_on>
+            <sys_customer_update>false</sys_customer_update>
+            <sys_id>b08708860f632200d92e85ace1050e5f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Server Script</sys_name>
+            <sys_package display_value="Code Review" source="x_44552_cr">44668c460f632200d92e85ace1050e4d</sys_package>
+            <sys_policy/>
+            <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+            <sys_scope display_value="Code Review">44668c460f632200d92e85ace1050e4d</sys_scope>
+            <sys_update_name>sys_documentation_x_44552_cr_change_server_script_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2016-12-08 15:11:58</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

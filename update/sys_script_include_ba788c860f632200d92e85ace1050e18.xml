@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_44552_cr.CodeReviewAjaxUtil</api_name>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>CodeReviewAjaxUtil</name>
+        <script><![CDATA[var CodeReviewAjaxUtil = Class.create();
+CodeReviewAjaxUtil.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	result: {"success": false, "data": null, "message": ""},
+	
+	requestCodeReview: function(updateSet){
+		try{
+			if(updateSet == undefined){
+				this.result.success = false;
+				this.result.message = "Update Set parameter is missing";
+				
+				return new global.JSON().encode(this.result);
+			}
+			
+			var update = this._getChanges(updateSet);
+			
+			if(!update.hasNext()){
+				this.result.success = false;
+				this.result.message = "Update Set contains no changes";
+				
+				return new global.JSON().encode(this.result);
+			}
+			
+			var codeReviewRequest = this._createCodeReview(updateSet);
+			
+			while(update.next()){
+				var relatedRecord = this._getRelatedRecord(update);
+				
+				if(relatedRecord){
+					var change = new GlideRecord("x_44552_cr_change");
+
+					if(!change.get("related_record", relatedRecord.sys_id)){
+						change.newRecord();
+						change.code_review = codeReviewRequest.sys_id;
+						change.type = update.type;
+						change.table = relatedRecord.sys_class_name;
+						change.related_record = relatedRecord.sys_id;
+						change.insert();
+					}
+
+					if(update.type == "Client Script"){
+						change.client_script = relatedRecord.getValue("script");
+					}
+					
+					if(update.type == "Script Script"){
+						change.server_script = relatedRecord.getValue("script");
+					}
+					
+					if(update.type == "Business Rule"){
+						change.server_script = relatedRecord.getValue("script");
+					}
+					
+					
+					change.update();
+				}
+			}
+			
+			this.result.success = true;
+			this.result.data = {
+								"number": codeReviewRequest.number.toString(),
+								"sys_id": codeReviewRequest.sys_id.toString(),
+								"total": update.getRowCount()
+							   };
+			
+			return new global.JSON().encode(this.result);
+		}catch(exception){
+			gs.error("Exception: " + exception);
+			return new global.JSON().encode(this.result);
+		}
+	},
+	
+	_getChanges: function(updateSet){
+		try{
+			var updateType = gs.getProperty("x_44552_cr.update_type");
+			var update = new GlideRecordSecure("sys_update_xml");
+			update.addQuery("update_set", updateSet);
+			update.addEncodedQuery("typeIN" + updateType);
+			update.query();
+			
+			return update;
+		}catch(exception){
+			throw exception;
+		}
+	},
+	
+	_createCodeReview: function(updateSet){
+		try{
+			var codeReview = new GlideRecord("x_44552_cr_request");
+			
+			if(codeReview.get("update_set", updateSet)){
+				return codeReview;
+			}
+			
+			codeReview.newRecord();
+			codeReview.update_set = updateSet;
+			codeReview.insert();
+
+			return codeReview;
+		}catch(exception){
+			throw exception;
+		}
+	},
+			
+	_getRelatedRecord: function(update){
+		try{
+			var file = new GlideRecord("sys_metadata");
+			file.addQuery("sys_update_name", update.name.toString());
+			file.query();
+			if(!file.next()) {
+				return null;
+			}
+
+			var relatedRecord = new GlideRecord(file.sys_class_name);
+			relatedRecord.get(file.sys_id);
+			return relatedRecord;
+		}catch(exception){
+			throw exception;
+		}
+	},
+	
+    type: 'CodeReviewAjaxUtil'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-12-08 15:27:30</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>ba788c860f632200d92e85ace1050e18</sys_id>
+        <sys_mod_count>38</sys_mod_count>
+        <sys_name>CodeReviewAjaxUtil</sys_name>
+        <sys_package display_value="Code Review" source="x_44552_cr">44668c460f632200d92e85ace1050e4d</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Code Review">44668c460f632200d92e85ace1050e4d</sys_scope>
+        <sys_update_name>sys_script_include_ba788c860f632200d92e85ace1050e18</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-12-08 16:40:39</sys_updated_on>
+    </sys_script_include>
+</record_update>

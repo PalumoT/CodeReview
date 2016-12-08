@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element extends="task" label="Code Review" max_length="40" name="x_44552_cr_request" type="collection">
+        <element label="Update Set" max_length="32" name="update_set" reference="sys_update_set" type="reference"/>
+    </element>
+</database>
